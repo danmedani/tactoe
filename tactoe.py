@@ -96,6 +96,7 @@ lines.append([[3, 1, 0], [2, 1, 1], [1, 1, 2], [0, 1, 3]])
 lines.append([[3, 2, 0], [2, 2, 1], [1, 2, 2], [0, 2, 3]])
 lines.append([[3, 3, 0], [2, 3, 1], [1, 3, 2], [0, 3, 3]])
 
+# TODO: Apply ML to these params?
 rankParams = [0, 1, 100, 1000, 10 ** 10]
 bigVal = 10 ** 10
 
