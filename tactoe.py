@@ -97,7 +97,7 @@ lines.append([[3, 2, 0], [2, 2, 1], [1, 2, 2], [0, 2, 3]])
 lines.append([[3, 3, 0], [2, 3, 1], [1, 3, 2], [0, 3, 3]])
 
 # TODO: Apply ML to these params?
-cpuParams = [1, 100, 10000, 10 ** 10]
+cpuParams = [1, 100, 10000, 10 ** 20]
 userParams = [100, 10000, 1000000, 10 ** 10]
 bigVal = 10 ** 10
 
@@ -139,8 +139,6 @@ def advanceSente(board, justMoved):
 
       if (counts[0] == 3) and (counts[1] == 0):
         # User is forced
-        print 'User will be forced. ', line
-        
         for pos in line:
           if board[pos[0]][pos[1]][pos[2]] == None:
             tmpBoard = copy.deepcopy(board)
@@ -160,8 +158,6 @@ def advanceSente(board, justMoved):
       counts = getCounts(board, line)
 
       if (counts[0] == 3) and (counts[1] == 0):
-        print 'CPU forced TO WIN! .', line
-        
         for pos in line:
           if board[pos[0]][pos[1]][pos[2]] == None:
             tmpBoard = copy.deepcopy(board)
@@ -174,9 +170,7 @@ def advanceSente(board, justMoved):
       counts = getCounts(board, line)
 
       if (counts[1] == 3) and (counts[0] == 0):
-        # User is forced
-        print 'Cpu will be forced. ', line
-        
+        # User is forced        
         for pos in line:
           if board[pos[0]][pos[1]][pos[2]] == None:
             tmpBoard = copy.deepcopy(board)
@@ -200,12 +194,31 @@ def getCounts(board, line):
 
 # Higher rank == better for Dave
 def getRank(theBoard):
-  global lines
+  global lines, moveList
 
   # Push game forward to natural state through sente moves.
   sente = advanceSente(theBoard, cpuName)
-  
   board = sente[0]
+  justMoved = sente[1]
+
+  # Check to see if there are any spots where if the user moved there, there would be more than 1
+  # 3 count for the user (0 cpu). If that spot is there, then this is a losing position.
+  if justMoved == cpuName:
+    for move in moveList:
+      tmpBoard = copy.deepcopy(board)
+      tmpBoard[move[0]][move[1]][move[2]] = userName
+
+      threeCounts = 0
+      for line in lines:
+        # Check who is on the line
+        counts = getCounts(tmpBoard, line)
+
+        if (counts[0] == 0) and (counts[1] == 3):
+          threeCounts = threeCounts + 1
+
+      if threeCounts > 1:
+        # losing strat
+        return -1 * (10 ** 30)
 
   rank = 0
   for line in lines:
@@ -256,34 +269,36 @@ def userMove(userName):
 def cpuMove(board):
   global moveList, lines
   
-  highestRanked = -1 * (10 ** 10)
+  highestRanked = -1 * (10 ** 20)
   moveToChoose = None
   
-  # Are we forced?
+  # Are we forced to win?
   for line in lines:
     counts = getCounts(board, line)
+
+    if (counts[1] == 0) and (counts[0] == 3):        
+      for pos in line:
+        if board[pos[0]][pos[1]][pos[2]] == None:
+
+          print cpuName + ' Moves Here: ', pos[0], pos[1], pos[2]
+          board[pos[0]][pos[1]][pos[2]] = cpuName
+          return
+
+  # Are we forced to move?
+  for line in lines:
+    counts = getCounts(board, line)
+  
     if (counts[0] == 0) and (counts[1] == 3):
       print 'Cpu is forced. ', line
         
       for pos in line:
         if board[pos[0]][pos[1]][pos[2]] == None:
-          # moveToChoose = board[pos[0]][pos[1]][pos[2]]
 
           print cpuName + ' Moves Here: ', pos[0], pos[1], pos[2]
           board[pos[0]][pos[1]][pos[2]] = cpuName
           return
 
-    if (counts[1] == 0) and (counts[0] == 3):
-      print 'Cpu is forced... TO WIN ', line
-        
-      for pos in line:
-        if board[pos[0]][pos[1]][pos[2]] == None:
-          # moveToChoose = board[pos[0]][pos[1]][pos[2]]
-
-          print cpuName + ' Moves Here: ', pos[0], pos[1], pos[2]
-          board[pos[0]][pos[1]][pos[2]] = cpuName
-          return
-
+  # No forced moves... Let's look for a good one
   for move in moveList:
     if board[move[0]][move[1]][move[2]] == None:
       tmpBoard = copy.deepcopy(board)
