@@ -201,9 +201,15 @@ def getRank(theBoard):
   board = sente[0]
   justMoved = sente[1]
 
-  # Check to see if there are any spots where if the user moved there, there would be more than 1
-  # 3 count for the user (0 cpu). If that spot is there, then this is a losing position.
   if justMoved == cpuName:
+    for line in lines:
+      counts = getCounts(board, line)
+      if counts[0] == 4:
+        # we won
+        return 10 ** 40
+
+    # Check to see if there are any spots where if the user moved there, there would be more than 1
+    # 3 count for the user (0 cpu). If that spot is there, then this is a losing position.
     for move in moveList:
       tmpBoard = copy.deepcopy(board)
       tmpBoard[move[0]][move[1]][move[2]] = userName
@@ -218,7 +224,19 @@ def getRank(theBoard):
 
       if threeCounts > 1:
         # losing strat
-        return -1 * (10 ** 30)
+        return -1 * (10 ** 40)
+
+    # # Check to see if we can get sente'd to death
+    # for move in moveList:
+    #   tmpBoard = copy.deepcopy(board)
+    #   tmpBoard[move[0]][move[1]][move[2]] = userName
+
+    #   newBoard = advanceSente(tmpBoard, userName)
+    #   for line in lines:
+    #     counts = getCounts(newBoard, line)
+    #     if counts[1] == 4:
+    #       # losing strat
+    #       return -1 * (10 ** 40)
 
   rank = 0
   for line in lines:
