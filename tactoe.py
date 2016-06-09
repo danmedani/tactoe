@@ -344,7 +344,7 @@ while True:
     break
   cpuMove(board)
   if isWinner(board):
-    print cpuName + ' has won!!! You Suck!'
+    print cpuName + ' has won!!!'
     break
 
 
