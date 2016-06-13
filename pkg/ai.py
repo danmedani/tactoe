@@ -89,7 +89,7 @@ class AI:
       
       # Check for forcing moves
       for line in self.lines:
-        counts = self.getCounts(board, line)    
+        counts = self.getCounts(board, line)
 
         if (counts[0] == 3) and (counts[1] == 0):
           # User is forced

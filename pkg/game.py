@@ -7,6 +7,8 @@ class Game:
 
     self.lines = lines
 
+    self.gameRecord = []
+
   def play(self):
     currentPlayer = 0
     # if random.random() < 0.5:
@@ -15,16 +17,19 @@ class Game:
     while True:
       moveRes = self.players[currentPlayer].move(self.board, self.boardSize)
       if moveRes[0] == None:
-        return self.players[currentPlayer].getName()
+        self.gameRecord.append(0.5)
+        return self.players[currentPlayer].getName(), self.formatGameRecord(-1)
       
-      print self.players[currentPlayer].getName(), 'moved here:', moveRes[0]
+      # print self.players[currentPlayer].getName(), 'moved here:', moveRes[0]
       self.board = moveRes[1]
+      
+      self.gameRecord.append(self.formatBoard())
 
       if self.isWinner():
-        print self.players[currentPlayer].getName() + ' has won!!! Good job!'
-        return self.players[currentPlayer].getName()
-        break
+        # print self.players[currentPlayer].getName() + ' has won!!! Good job!'
+        return self.players[currentPlayer].getName(), self.formatGameRecord(currentPlayer)
 
+      # Switch players
       currentPlayer = 1 - currentPlayer
 
   def isWinner(self):
@@ -44,3 +49,30 @@ class Game:
           return True
 
     return False
+
+  def formatBoard(self):
+    retVal = []
+    for layer in self.board:
+      for row in layer:
+        for pos in row:
+          if pos == None:
+            retVal.append(0)
+          elif pos == self.players[0].getName():
+            retVal.append(1)
+          else:
+            retVal.append(-1)
+    return retVal
+
+  def formatGameRecord(self, winningPlayer):
+    outputs = []
+    player = 0
+    for gameState in self.gameRecord:
+      if winningPlayer == -1:
+        outputs.append([0.5])
+      elif winningPlayer == player:
+        outputs.append([1])
+      else:
+        outputs.append([0])
+      player = 1 - player
+    
+    return [self.gameRecord, outputs]
