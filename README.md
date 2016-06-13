@@ -1,1 +1,5 @@
-3D Tic Tac Toe playing bot! Simple for now - going to look into putting some machine learning on it
+3D Tic Tac Toe playing bot!
+
+to run, use:
+python -m pkg.tactoe
+
