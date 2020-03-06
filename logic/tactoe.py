@@ -3,10 +3,10 @@
 import sys
 import copy
 import random
-from game import Game
-from user import User
-from ai import AI
-from gameEssentials import GameEssentials
+from logic.game import Game
+from logic.user import User
+from logic.ai import AI
+from logic.gameEssentials import GameEssentials
 
 boardSize = 4
 bestParams = [375250, 561784, 713811, 954648]
