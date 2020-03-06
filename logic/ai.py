@@ -190,4 +190,5 @@ class AI:
 
     return rank
 
-
+def some_fun(a):
+  return a + 2
