@@ -3,7 +3,7 @@ class Game:
     self.players = (p1, p2)
 
     self.boardSize = 4
-    self.board = [[[None for x in xrange(self.boardSize)] for y in xrange(self.boardSize)] for z in xrange(self.boardSize)]
+    self.board = [[[None for x in range(self.boardSize)] for y in range(self.boardSize)] for z in range(self.boardSize)]
 
     self.lines = lines
 
@@ -15,18 +15,18 @@ class Game:
     #   currentPlayer = 1
     
     while True:
-      moveRes = self.players[currentPlayer].move(self.board, self.boardSize)
+      moveRes = self.players[currentPlayer].move(self.board)
       if moveRes[0] == None:
         self.gameRecord.append(0.5)
         return self.players[currentPlayer].getName(), self.formatGameRecord(-1)
       
-      # print self.players[currentPlayer].getName(), 'moved here:', moveRes[0]
+      print(self.players[currentPlayer].getName(), 'moved here:', moveRes[0])
       self.board = moveRes[1]
       
       self.gameRecord.append(self.formatBoard())
 
       if self.isWinner():
-        # print self.players[currentPlayer].getName() + ' has won!!! Good job!'
+        print(self.players[currentPlayer].getName() + ' has won!!! Good job!')
         return self.players[currentPlayer].getName(), self.formatGameRecord(currentPlayer)
 
       # Switch players
@@ -34,7 +34,6 @@ class Game:
 
   def isWinner(self):
     for line in self.lines:
-      # line = [[0,0,0],[0,0,1],[0,0,2],[0,0,3]]
       user = self.board[line[0][0]][line[0][1]][line[0][2]]
       wonLine = False
       if user != None:

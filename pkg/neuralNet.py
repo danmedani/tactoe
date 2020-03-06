@@ -23,7 +23,7 @@ syn1 = 2*np.random.random((5,5)) - 1
 syn2 = 2*np.random.random((5,5)) - 1
 syn3 = 2*np.random.random((5,1)) - 1
 
-for j in xrange(40000):
+for j in range(40000):
 
   # Feed forward
   l0 = trainingInput

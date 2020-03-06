@@ -9,15 +9,15 @@ class AI:
     self.lines = lines
     
     self.moveList = []
-    for a in xrange(boardSize):
-      for b in xrange(boardSize):
-        for c in xrange(boardSize):
+    for a in range(boardSize):
+      for b in range(boardSize):
+        for c in range(boardSize):
           self.moveList.append([a, b, c])
 
   def getName(self):
     return self.cpuName
 
-  def move(self, board, boardSize):
+  def move(self, board):
     highestRanked = -1 * (10 ** 90)
     moveToChoose = None
     
@@ -29,7 +29,6 @@ class AI:
         for pos in line:
           if board[pos[0]][pos[1]][pos[2]] == None:
 
-            # print self.cpuName + ' Moves Here: ', pos[0], pos[1], pos[2]
             board[pos[0]][pos[1]][pos[2]] = self.cpuName
             return pos, board
 
@@ -40,8 +39,6 @@ class AI:
       if (counts[0] == 0) and (counts[1] == 3):
         for pos in line:
           if board[pos[0]][pos[1]][pos[2]] == None:
-
-            # print cpuName + ' Moves Here: ', pos[0], pos[1], pos[2]
             board[pos[0]][pos[1]][pos[2]] = self.cpuName
             return pos, board
 
@@ -52,7 +49,7 @@ class AI:
         moveFound = True
         tmpBoard = copy.deepcopy(board)
         tmpBoard[move[0]][move[1]][move[2]] = self.cpuName
-        # print '     move ', move
+
         potentialRank = self.getRank(tmpBoard)
 
         if potentialRank > highestRanked:
@@ -60,10 +57,9 @@ class AI:
           moveToChoose = move
 
     if not moveFound:
-      print 'Cat Game'
+      print('Cat Game')
       return None, board
-    # print moveToChoose
-    # print self.cpuName + ' Moves Here: ', moveToChoose
+
     board[moveToChoose[0]][moveToChoose[1]][moveToChoose[2]] = self.cpuName
     return moveToChoose, board
 
@@ -193,3 +189,5 @@ class AI:
         rank = rank - self.userParams[counts[1]-1]
 
     return rank
+
+

@@ -5,7 +5,7 @@ boardSize = 4
 
 class Game(resource.Resource):
   isLeaf = True
-  board = [[[None for x in xrange(boardSize)] for y in xrange(boardSize)] for z in xrange(boardSize)]
+  board = [[[None for x in range(boardSize)] for y in range(boardSize)] for z in range(boardSize)]
 
   def render_GET(self, request):
     # self.numberRequests += 1
