@@ -51,12 +51,29 @@ class AI:
         moveFound = True
         board[move[0]][move[1]][move[2]] = self.cpuName
 
-        potentialRank = self.getRank(board)
+        lowestScoreWithOpponentMove = 10 ** 90
+        for opp_move in self.moveList:
+          if board[opp_move[0]][opp_move[1]][opp_move[2]] == None:
+            board[opp_move[0]][opp_move[1]][opp_move[2]] = self.opponentName
+            # newRank = self.getRank(board)
 
-        if potentialRank > highestRanked:
-          highestRanked = potentialRank
+            nextMoveHighest = -10 ** 90
+            for next_move in self.moveList:
+              if board[next_move[0]][next_move[1]][next_move[2]] == None:
+                board[next_move[0]][next_move[1]][next_move[2]] = self.cpuName
+                nextMoveRank = self.getRank(board)
+                if nextMoveRank > nextMoveHighest:
+                  nextMoveHighest = nextMoveRank
+                board[next_move[0]][next_move[1]][next_move[2]] = None
+
+            if nextMoveHighest < lowestScoreWithOpponentMove:
+              lowestScoreWithOpponentMove = nextMoveHighest
+            board[opp_move[0]][opp_move[1]][opp_move[2]] = None
+
+        if lowestScoreWithOpponentMove > highestRanked:
+          highestRanked = lowestScoreWithOpponentMove
           goodMoves = [move]
-        elif potentialRank == highestRanked:
+        elif lowestScoreWithOpponentMove == highestRanked:
           goodMoves.append(move)
         
         board[move[0]][move[1]][move[2]] = None
