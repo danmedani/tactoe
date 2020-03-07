@@ -1,11 +1,11 @@
+from logic.game_essentials import LINES
+
 class Game:
-  def __init__(self, p1, p2, lines):
+  def __init__(self, p1, p2):
     self.players = (p1, p2)
 
     self.boardSize = 4
     self.board = [[[None for x in range(self.boardSize)] for y in range(self.boardSize)] for z in range(self.boardSize)]
-
-    self.lines = lines
 
     self.gameRecord = []
 
@@ -33,7 +33,7 @@ class Game:
       currentPlayer = 1 - currentPlayer
 
   def isWinner(self):
-    for line in self.lines:
+    for line in LINES:
       user = self.board[line[0][0]][line[0][1]][line[0][2]]
       wonLine = False
       if user != None:

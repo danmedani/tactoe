@@ -1,0 +1,45 @@
+Enter Name: Priyanka
+Please enter position (space separated) x y z: 2 1 2
+User Moved:  [2, 1, 2]
+Priyanka moved here: (2, 1, 2)
+Mongo moved here: [0, 0, 0]
+Please enter position (space separated) x y z: 1 1 1
+User Moved:  [1, 1, 1]
+Priyanka moved here: (1, 1, 1)
+Mongo moved here: [1, 1, 2]
+Please enter position (space separated) x y z: 2 1 1
+User Moved:  [2, 1, 1]
+Priyanka moved here: (2, 1, 1)
+Mongo moved here: [0, 3, 0]
+Please enter position (space separated) x y z: 1 2 2
+User Moved:  [1, 2, 2]
+Priyanka moved here: (1, 2, 2)
+Mongo moved here: [0, 3, 3]
+Please enter position (space separated) x y z: 2 2 1
+User Moved:  [2, 2, 1]
+Priyanka moved here: (2, 2, 1)
+Mongo moved here: [3, 0, 0]
+Please enter position (space separated) x y z: 1 2 1
+User Moved:  [1, 2, 1]
+Priyanka moved here: (1, 2, 1)
+Mongo moved here: [2, 2, 2]
+Please enter position (space separated) x y z: 3 0 1
+User Moved:  [3, 0, 1]
+Priyanka moved here: (3, 0, 1)
+Mongo moved here: [0, 3, 1]
+Please enter position (space separated) x y z: 0 3 2
+User Moved:  [0, 3, 2]
+Priyanka moved here: (0, 3, 2)
+Mongo moved here: [3, 0, 2]
+Please enter position (space separated) x y z: 3 3 1
+User Moved:  [3, 3, 1]
+Priyanka moved here: (3, 3, 1)
+Mongo moved here: [0, 0, 1]
+Please enter position (space separated) x y z: 3 2 1
+User Moved:  [3, 2, 1]
+Priyanka moved here: (3, 2, 1)
+Mongo moved here: [3, 1, 1]
+Please enter position (space separated) x y z: 0 2 1
+User Moved:  [0, 2, 1]
+Priyanka moved here: (0, 2, 1)
+Priyanka has won!!! Good job!
