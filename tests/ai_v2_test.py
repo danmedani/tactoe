@@ -2,7 +2,8 @@ import copy
 from logic.ai_v2 import convert_position
 from logic.ai_v2 import convert_board
 from logic.ai_v2 import is_valid_move
-from logic.ai_v2 import get_best_score
+# from logic.ai_v2 import get_best_score
+from logic.ai_v2 import get_best_result
 from logic.ai_v2 import score_count
 from logic.ai_v2 import score_board
 
@@ -75,16 +76,18 @@ def test_is_valid_move():
 	assert not is_valid_move(test_board, [0, 1, 0])
 	assert not is_valid_move(test_board, [3, 2, 3])
 
-def test_get_best_score_zero():
-	test_board = copy.deepcopy(MOCK_BOARD)
-	assert get_best_score(test_board, 0, 0) == 0
+# def test_get_best_score_zero():
+# 	test_board = copy.deepcopy(MOCK_BOARD)
+# 	assert get_best_score(test_board, 0, 0) == 0
 
-def test_get_best_score_one():
-	test_board = copy.deepcopy(MOCK_BOARD)
-	assert get_best_score(test_board, 0, 1) == 7
+# def test_get_best_score_one():
+# 	test_board = copy.deepcopy(MOCK_BOARD)
+# 	assert get_best_score(test_board, 0, 1) == 7
 
-def test_get_best_score_one():
-	test_board = copy.deepcopy(MOCK_BOARD)
-	assert get_best_score(test_board, 0, 2) == 3
+# def test_get_best_score_one():
+# 	test_board = copy.deepcopy(MOCK_BOARD)
+# 	assert get_best_score(test_board, 0, 2) == 3
 
+def test_get_best_result():
+	assert get_best_result()
 

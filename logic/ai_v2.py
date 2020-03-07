@@ -57,42 +57,82 @@ def score_board(board, turn):
     )
   return score
 
-def get_best_score(
-  board,
-  turn,
-  depth
-):
-  if depth == 0:
-    return score_board(board, turn)
-  
-  max_score = -1 * MAX_SCORE
-  for move in [move for move in MOVE_LIST if is_valid_move(board, move)]:
-    board[move[0]][move[1]][move[2]] = turn
-    score = get_best_score(
-      board,
-      1 - turn,
-      depth - 1
-    )
-    if score > max_score:
-      max_score = score
-    
-    board[move[0]][move[1]][move[2]] = None
-  
-  return max_score
 
+# def get_best_score(
+#   board,
+#   turn,
+#   depth
+# ):
+#   current_score = score_board(board, turn)
+#   if current_score > 10 ** 10:
+#     return current_score
+
+#   if current_score > 10 ** 10:
+#     return current_score
+#   if depth == 0:
+#     return current_score
+  
+#   max_score = -1 * MAX_SCORE
+#   valid_moves = [move for move in MOVE_LIST if is_valid_move(board, move)]
+#   for move in valid_moves:
+#     board[move[0]][move[1]][move[2]] = turn
+#     score = get_best_score(
+#       board,
+#       1 - turn,
+#       depth - 1
+#     )
+#     if score > max_score:
+#       max_score = score
+    
+#     board[move[0]][move[1]][move[2]] = None
+  
+#   return max_score
+
+# def best_move(board, turn, depth):
+#   best_move = None
+#   best_score = -1 * MAX_SCORE
+  
+#   valid_moves = [move for move in MOVE_LIST if is_valid_move(converted_board, move)]
+#   for move in valid_moves:
+#     board[move[0]][move[1]][move[2]] = turn
+
+#     board[move[0]][move[1]][move[2]] = None
+
+def get_best_result(board, turn, depth):
+  score = score_board(board, turn)
+  # if we won, or are tired looking...
+  if depth == 0 or score > 10 ** 10:
+    return score
+  
+  best_result = -1 * MAX_SCORE
+  for move in [move for move in MOVE_LIST if is_valid_move(board, move)]:
+    # move here
+    board[move[0]][move[1]][move[2]] = turn
+
+    opponent_best_outcome = get_best_result(board, 1 - turn, depth - 1)
+    best_outcome = opponent_best_outcome * -1
+
+    if best_outcome > best_result:
+      best_result = best_outcome
+    
+    # unmove
+    board[move[0]][move[1]][move[2]] = None
+
+  return best_result
 
 def move(board):
   converted_board = convert_board(board)
   best_move = None
-  best_score = -1 * MAX_SCORE
+  best_score = -10 * MAX_SCORE
 
   for move in [move for move in MOVE_LIST if is_valid_move(converted_board, move)]:
     # cpu moves here
-    converted_board[move[0]][move[1]][move[2]] = 0
+    converted_board[move[0]][move[1]][move[2]] = 1
+    opponent_best_outcome = get_best_result(converted_board, 0, 2)
+    best_outcome = opponent_best_outcome * -1
 
-    score = get_best_score(converted_board, 0, 1)
-    if score > best_score:
-      best_score = score
+    if best_outcome > best_score:
+      best_score = best_outcome
       best_move = move
     
     converted_board[move[0]][move[1]][move[2]] = None

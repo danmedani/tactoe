@@ -11,50 +11,44 @@ from logic.game_essentials import LINES
 from logic.ai_v2 import CPU_NAME
 
 boardSize = 4
-bestParams = [375250, 561784, 713811, 954648]
-bestUserParams = [322324, 485781, 555105, 783246]
+bestParams = [1, 4, 20, 10**10]
+bestUserParams = [1, 4, 20, 10**10]
+
+# bestParams = [10, 31, 80, 10**10]
+# bestUserParams = [10, 31, 80, 10**10]
 
 user = User()
 cpu = AI(boardSize, CPU_NAME, user.getName(), bestParams, bestUserParams, LINES)
-cpu = AIV2()
 game = Game(user, cpu)
 game.play()
 
 # Playing the machines against each other
 # while True:
-#   bar = random.randint(100, 1000000)
+# #   bar = random.randint(100, 1000000)
 #   champ = AI(boardSize, 'Champ', 'Challenger', bestParams, bestUserParams, LINES)
   
 #   challengerParams = []
 #   lastNum = 1
-#   for i in range(4):
-#     newNum = random.randint(lastNum, lastNum + bar)
-#     challengerParams.append(newNum)
+#   first_param = random.randint(1, 10)
+#   second_param = random.randint(first_param, 100)
+#   third_param = random.randint(second_param, 1000)
 
-#     lastNum = newNum
+#   challengerUserParams = [first_param, second_param, third_param, 10 ** 10]
+# #   print(challengerUserParams)
 
-#   challengerUserParams = []
-#   lastNum = 1
-#   for i in range(4):
-#     newNum = random.randint(lastNum, lastNum + bar)
-#     challengerUserParams.append(newNum)
-
-#     lastNum = newNum
-
-#   challenger = AI(boardSize, 'Challenger', 'Champ', challengerParams, challengerUserParams, LINES)
+#   challenger = AI(boardSize, 'Challenger', 'Champ', challengerUserParams, challengerUserParams, LINES)
   
-#   # print 'The Champ:', bestParams, bestUserParams
-#   # print 'The Challenger:', challengerParams, challengerUserParams
+# #   print 'The Champ:', bestParams, bestUserParams
+# #   print 'The Challenger:', challengerParams, challengerUserParams
 
-#   game = Game(champ, challenger, LINES)
+#   game = Game(champ, challenger)
 
 #   winner, record = game.play()
 
-#   # print 'Winner: ', winner
-#   print record
+# #   print 'Winner: ', winner
+# #   print record
 #   if winner == 'Challenger':
-#     # print 'New Champ!', winner
-#     bestParams = challengerParams
+#     print('New Champ!', winner, challengerUserParams)
+#     bestParams = challengerUserParams
 #     bestUserParams = challengerUserParams
-
-#     
+    
