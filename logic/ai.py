@@ -43,48 +43,76 @@ class AI:
             board[pos[0]][pos[1]][pos[2]] = self.cpuName
             return pos, board
 
-    # No forced moves... Let's look for a good one
-    moveFound = False
-    goodMoves = []
-    for move in self.moveList:
-      if board[move[0]][move[1]][move[2]] == None:
-        moveFound = True
-        board[move[0]][move[1]][move[2]] = self.cpuName
+    possible_move_length = len(
+      [
+        move 
+        for move in self.moveList 
+        if board[move[0]][move[1]][move[2]] == None
+      ]
+    )
+    depth_search = 2 \
+      if possible_move_length > 61 else 3 if possible_move_length > 24 else 4 \
+      if possible_move_length > 15 else 5 if possible_move_length > 8 else 6
+    bestMoves, best_moves_rank = self.find_best_moves(
+      board,
+      depth_search,
+      self.cpuName
+    )
+    print(bestMoves, best_moves_rank)
 
-        lowestScoreWithOpponentMove = 10 ** 90
-        for opp_move in self.moveList:
-          if board[opp_move[0]][opp_move[1]][opp_move[2]] == None:
-            board[opp_move[0]][opp_move[1]][opp_move[2]] = self.opponentName
-            # newRank = self.getRank(board)
-
-            nextMoveHighest = -10 ** 90
-            for next_move in self.moveList:
-              if board[next_move[0]][next_move[1]][next_move[2]] == None:
-                board[next_move[0]][next_move[1]][next_move[2]] = self.cpuName
-                nextMoveRank = self.getRank(board)
-                if nextMoveRank > nextMoveHighest:
-                  nextMoveHighest = nextMoveRank
-                board[next_move[0]][next_move[1]][next_move[2]] = None
-
-            if nextMoveHighest < lowestScoreWithOpponentMove:
-              lowestScoreWithOpponentMove = nextMoveHighest
-            board[opp_move[0]][opp_move[1]][opp_move[2]] = None
-
-        if lowestScoreWithOpponentMove > highestRanked:
-          highestRanked = lowestScoreWithOpponentMove
-          goodMoves = [move]
-        elif lowestScoreWithOpponentMove == highestRanked:
-          goodMoves.append(move)
-        
-        board[move[0]][move[1]][move[2]] = None
-
-    if not moveFound:
+    if not bestMoves:
       print('Cat Game')
       return None, board
-
-    moveToChoose = random.choice(goodMoves)
+    moveToChoose = random.choice(bestMoves)
     board[moveToChoose[0]][moveToChoose[1]][moveToChoose[2]] = self.cpuName
     return moveToChoose, board
+
+  def next_mover(self, current_mover):
+    return self.cpuName if current_mover == self.opponentName else self.opponentName
+
+  def find_best_moves(
+    self,
+    board,
+    depth,
+    mover
+  ):
+    if depth == 1:
+      # find best ranking of possible moves
+      best_move_rank = -1 * (10 ** 90)
+      best_moves = []
+      for move in self.moveList:
+        if board[move[0]][move[1]][move[2]] == None:
+          board[move[0]][move[1]][move[2]] = mover
+          rank = self.getRank(board, mover)
+          if rank == best_move_rank:
+            best_moves.append(move)
+          elif rank > best_move_rank:
+            best_move_rank = rank
+            best_moves = [move]
+          board[move[0]][move[1]][move[2]] = None
+      return best_moves, best_move_rank
+    
+    # find (wise) opponent's worst move
+    worst_opponents_move_rank = 10 ** 90
+    best_moves = []
+    for move in self.moveList:
+      if board[move[0]][move[1]][move[2]] == None:
+        board[move[0]][move[1]][move[2]] = mover
+
+        _, best_move_rank_for_opponent_after_this_move = self.find_best_moves(
+          board,
+          depth - 1,
+          self.next_mover(mover)
+        )
+        if best_move_rank_for_opponent_after_this_move == worst_opponents_move_rank:
+          best_moves.append(move)
+        elif best_move_rank_for_opponent_after_this_move < worst_opponents_move_rank:
+          worst_opponents_move_rank = best_move_rank_for_opponent_after_this_move
+          best_moves = [move]
+        board[move[0]][move[1]][move[2]] = None
+
+    # print(best_moves, worst_opponents_move_rank)
+    return best_moves, worst_opponents_move_rank
 
 
   def getCounts(self, board, line):
@@ -99,8 +127,7 @@ class AI:
 
     return (cpuCount, userCount)
 
-  # Higher rank == better for Mongo
-  def getRank(self, theBoard):
+  def getRank(self, theBoard, mover):
     rank = 0
     for line in self.lines:
       # Check who is on the line
@@ -110,9 +137,16 @@ class AI:
         rank = rank + 0
       elif counts[0] * counts[1] > 0: # dead line
         rank = rank + 0
-      elif counts[0] > 0:
-        rank = rank + self.cpuParams[counts[0]-1]
-      elif counts[1] > 0:
-        rank = rank - self.userParams[counts[1]-1]
+      else:
+        if mover == 'Mongo':
+          if counts[0] > 0:
+            rank = rank + self.cpuParams[counts[0]-1]
+          elif counts[1] > 0:
+            rank = rank - self.userParams[counts[1]-1]
+        else:
+          if counts[1] > 0:
+            rank = rank + self.cpuParams[counts[1]-1]
+          elif counts[0] > 0:
+            rank = rank - self.userParams[counts[0]-1]
 
     return rank
